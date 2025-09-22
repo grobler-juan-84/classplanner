@@ -9,6 +9,7 @@
 </head>
 <body>
 
+
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
@@ -26,12 +27,39 @@
     </div>
   </nav>
 
+
   <!-- Hero Section -->
   <div class="bg-light text-center p-5">
     <h1>Welcome to My Bootstrap Demo 🚀</h1>
     <p class="lead">This page shows off some basic Bootstrap components</p>
     <button class="btn btn-primary btn-lg">Get Started</button>
   </div>
+
+
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Open Student Info
+</button>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Student Info</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Here’s where we could show more details about a student.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <!-- Grid Section -->
   <div class="container mt-5">
@@ -43,6 +71,7 @@
     </div>
   </div>
 
+  
   <!-- Cards Section -->
   <div class="container mt-5">
     <h2 class="text-center">Cards</h2>
@@ -79,8 +108,32 @@
           </div>
         </div>
       </div>
+
+      <div class="card mt-4" style="width: 18rem;">
+        <img src="https://placekitten.com/300/200" class="card-img-top" alt="Student Avatar">
+        <div class="card-body">
+          <h5 class="card-title">Student Name</h5>
+          <p class="card-text">Points: 10</p>
+          <a href="#" class="btn btn-primary">Give Point</a>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Extra Grid Practice -->
+  <div class="row mt-4">
+    <div class="col-sm">
+      <div class="p-3 bg-light border">Column 1</div>
+    </div>
+    <div class="col-sm">
+      <div class="p-3 bg-light border">Column 2</div>
+    </div>
+    <div class="col-sm">
+      <div class="p-3 bg-light border">Column 3</div>
+    </div>
+  </div>
+  
+
 
   <!-- Footer -->
   <footer class="bg-dark text-white text-center p-3 mt-5">
