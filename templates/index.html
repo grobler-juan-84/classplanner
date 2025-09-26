@@ -71,70 +71,25 @@
     </div>
   </div>
 
+  <!-- Classroom Name including Cards -->
+  <div class="container mt-4">
+    <h2>{{ classroom.name }}</h2>
   
-  <!-- Cards Section -->
-  <div class="container mt-5">
-    <h2 class="text-center">Cards</h2>
-    <div class="row g-4 mt-3">
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://via.placeholder.com/300" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Card One</h5>
-            <p class="card-text">This is a simple card with text and a button.</p>
-            <a href="#" class="btn btn-primary">Click Me</a>
+    <div class="row mt-4">
+      {% for student in students %}
+        <div class="col-sm-4 mb-3">
+          <div class="card" style="width: 18rem;">
+            <img src="{{ student.avatar_url }}" class="card-img-top" alt="{{ student.name }}">
+            <div class="card-body text-center">
+              <h5 class="card-title">{{ student.name }}</h5>
+              <p class="card-text">Points: {{ student.points }}</p>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://via.placeholder.com/300" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Card Two</h5>
-            <p class="card-text">Cards are great for showing structured content.</p>
-            <a href="#" class="btn btn-success">Learn More</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://via.placeholder.com/300" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Card Three</h5>
-            <p class="card-text">You can easily add images, titles, and buttons.</p>
-            <a href="#" class="btn btn-danger">Go</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="card mt-4" style="width: 18rem;">
-        <img src="https://placekitten.com/300/200" class="card-img-top" alt="Student Avatar">
-        <div class="card-body">
-          <h5 class="card-title">Student Name</h5>
-          <p class="card-text">Points: 10</p>
-          <a href="#" class="btn btn-primary">Give Point</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Extra Grid Practice -->
-  <div class="row mt-4">
-    <div class="col-sm">
-      <div class="p-3 bg-light border">Column 1</div>
-    </div>
-    <div class="col-sm">
-      <div class="p-3 bg-light border">Column 2</div>
-    </div>
-    <div class="col-sm">
-      <div class="p-3 bg-light border">Column 3</div>
+      {% endfor %}
     </div>
   </div>
   
-
-
   <!-- Footer -->
   <footer class="bg-dark text-white text-center p-3 mt-5">
     <p>© 2025 My Demo Page | Built with Bootstrap 5</p>
