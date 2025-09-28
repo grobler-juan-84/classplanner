@@ -1,48 +1,36 @@
-from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request, redirect, url_for
 
-# -------------------
-# Flask App Setup
-# -------------------
 app = Flask(__name__)
 
-# Configure SQLite Database
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///students.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# Fake data (temporary)
+students = [
+    {"id": 1, "name": "Alice", "points": 10, "avatar": "😀"},
+    {"id": 2, "name": "Bob", "points": 8, "avatar": "🐱"},
+    {"id": 3, "name": "Charlie", "points": 5, "avatar": "🐻"},
+]
 
-# Initialize Database
-db = SQLAlchemy(app)
-
-# -------------------
-# Database Models
-# -------------------
-class Class(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    students = db.relationship("Student", backref="class_", lazy=True)
-
-class Student(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    points = db.Column(db.Integer, default=0)
-    class_id = db.Column(db.Integer, db.ForeignKey("class.id"), nullable=False)
-
-# -------------------
-# Routes
-# -------------------
+# Home -> redirect to class view
 @app.route("/")
 def home():
-    return "<h1>Classroom Management Tool</h1><p>Database is ready!</p>"
+    return redirect(url_for("view_class", class_id=1))
 
-# -------------------
-# Create Database
-# -------------------
-with app.app_context():
-    db.create_all()
+# Fake class page
+@app.route("/class/<int:class_id>")
+def view_class(class_id):
+    return render_template("students.html", students=students)
 
-# -------------------
-# Run the App
-# -------------------
+# Award points (in memory)
+@app.route("/award/<int:student_id>", methods=["POST"])
+def award_points(student_id):
+    for student in students:
+        if student["id"] == student_id:
+            student["points"] += 1
+    return redirect(url_for("view_class", class_id=1))
+
+@app.route("/classroom")
+def classroom():
+    return render_template("classroom.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
 

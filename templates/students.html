@@ -11,7 +11,6 @@
             position: relative;
             text-align: center;
             padding: 15px;
-            cursor: pointer;
         }
         .student-avatar {
             font-size: 4rem;
@@ -26,7 +25,6 @@
             border-radius: 50%;
             padding: 5px 10px;
             font-size: 0.9rem;
-            cursor: pointer;
         }
         .student-name {
             margin-top: 10px;
@@ -42,18 +40,12 @@
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
             <div class="student-card border rounded shadow-sm mb-4">
                 <div class="student-avatar">{{ student.avatar }}</div>
-                <div class="points-badge" onclick="addPoint(this)">{{ student.points }}</div>
+                <div class="points-badge">{{ student.points }}</div>
                 <div class="student-name">{{ student.name }}</div>
             </div>
         </div>
         {% endfor %}
     </div>
-
-    <script>
-        function addPoint(badge) {
-            let currentPoints = parseInt(badge.innerText);
-            badge.innerText = currentPoints + 1;
-        }
-    </script>
 </body>
 </html>
+
