@@ -2,210 +2,228 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Classroom Multi-Select</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classroom</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f8f9fa;
       margin: 0;
-      padding: 20px;
-    }
-
-    .classroom {
+      font-family: "Arial", sans-serif;
+      background: #f7f8fa;
       display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    .student-card {
-      position: relative;
-      width: 100px;
-      height: 120px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    /* ===== Left Sidebar ===== */
+    .sidebar {
+      width: 250px;
+      background: #fff;
+      border-right: 1px solid #ddd;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      padding: 15px;
+    }
+    .sidebar h2 {
+      font-size: 18px;
+      margin: 0 0 20px;
+      color: #333;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar ul li {
+      padding: 10px;
       cursor: pointer;
-      transition: 0.2s;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .sidebar ul li:hover,
+    .sidebar ul li.active {
+      background: #f0f0f5;
     }
 
-    .student-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    /* ===== Main Section ===== */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
 
-    .student-card.selected {
-      border: 3px solid #007bff;
-      box-shadow: 0 0 10px rgba(0,123,255,0.6);
+    /* Top Header */
+    header {
+      background: #fff;
+      padding: 15px 20px;
+      border-bottom: 1px solid #ddd;
     }
-
-    .avatar {
-      font-size: 40px;
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #333;
     }
-
-    .badge {
-      position: absolute;
-      top: 5px;
-      right: 8px;
-      background: #28a745;
-      color: white;
-      border-radius: 12px;
-      padding: 2px 6px;
+    nav {
+      margin-top: 10px;
+    }
+    nav a {
+      margin-right: 15px;
+      text-decoration: none;
+      color: #666;
+      font-weight: bold;
       font-size: 14px;
     }
-
-    /* Toolbar */
-    .toolbar {
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 10px 20px;
-      display: none;
-      gap: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    nav a.active {
+      color: #6c63ff;
+      border-bottom: 2px solid #6c63ff;
+      padding-bottom: 3px;
     }
 
-    .toolbar button {
-      padding: 6px 12px;
-      border: none;
-      border-radius: 6px;
+    /* Students Grid */
+    .students-grid {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 15px;
+    }
+    .student {
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
       cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease;
+    }
+    .student:hover {
+      transform: scale(1.05);
+    }
+    .student img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+    .points {
+      display: inline-block;
+      margin-top: 5px;
+      padding: 3px 8px;
+      background: #6c63ff;
+      color: white;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+    .student.selected {
+      outline: 3px solid #6c63ff;
     }
 
-    .toolbar .award { background: #007bff; color: white; }
-    .toolbar .clear { background: #dc3545; color: white; }
-
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 10;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
+    /* ===== Bottom Toolbar ===== */
+    .bottom-bar {
+      background: #fff;
+      border-top: 1px solid #ddd;
+      display: flex;
       justify-content: center;
       align-items: center;
+      padding: 10px;
     }
-
-    .modal-content {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 300px;
-      text-align: center;
-    }
-
-    .close {
-      float: right;
+    .bottom-bar button {
+      margin: 0 10px;
+      border: none;
+      background: none;
+      font-size: 14px;
       cursor: pointer;
-      font-size: 18px;
+      color: #666;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .bottom-bar button.active {
+      color: #6c63ff;
       font-weight: bold;
     }
   </style>
 </head>
 <body>
-
-  <h2>Classroom</h2>
-  <div class="classroom">
-    <div class="student-card" data-student="Alice">
-      <div class="avatar">😀</div>
-      <span class="badge">10</span>
-      <p>Alice</p>
-    </div>
-    <div class="student-card" data-student="Bob">
-      <div class="avatar">😎</div>
-      <span class="badge">8</span>
-      <p>Bob</p>
-    </div>
-    <div class="student-card" data-student="Charlie">
-      <div class="avatar">🤓</div>
-      <span class="badge">15</span>
-      <p>Charlie</p>
-    </div>
+  <!-- ===== Sidebar ===== -->
+  <div class="sidebar">
+    <h2>My School</h2>
+    <ul>
+      <li class="active">Grade 1 - RB2</li>
+      <li>Grade 4 - BE3</li>
+      <li>Demo Class</li>
+      <li>New Class</li>
+    </ul>
   </div>
 
-  <!-- Toolbar -->
-  <div class="toolbar" id="toolbar">
-    <button class="award" onclick="openModal()">Award Points</button>
-    <button class="clear" onclick="clearSelection()">Clear Selection</button>
-  </div>
+  <!-- ===== Main Section ===== -->
+  <div class="main">
+    <!-- Top header -->
+    <header>
+      <h1>Grade 1 - RB2</h1>
+      <nav>
+        <a href="#" class="active">Students</a>
+        <a href="#">Groups</a>
+        <a href="#">Class Story</a>
+        <a href="#">Chats</a>
+        <a href="#">Calendar</a>
+      </nav>
+    </header>
 
-  <!-- Modal -->
-  <div id="studentModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2>Award Points</h2>
-      <label>Reason:
-        <select id="reason">
-          <option>Positive Attitude</option>
-          <option>Helping Others</option>
-          <option>Excellent Work</option>
-        </select>
-      </label>
-      <br><br>
-      <label>Points:
-        <input type="number" id="points" value="1" min="1" max="20">
-      </label>
-      <br><br>
-      <button onclick="awardPoints()">Confirm</button>
+    <!-- Students Grid -->
+    <div class="students-grid">
+      <div class="student" data-id="1">
+        <img src="avatar1.png" alt="Avatar">
+        <p>01 YOON</p>
+        <span class="points">41</span>
+      </div>
+      <div class="student" data-id="2">
+        <img src="avatar2.png" alt="Avatar">
+        <p>02 YUNA</p>
+        <span class="points">31</span>
+      </div>
+      <div class="student" data-id="3">
+        <img src="avatar3.png" alt="Avatar">
+        <p>03 DAEUN</p>
+        <span class="points">36</span>
+      </div>
+      <!-- Keep adding more students -->
+    </div>
+
+    <!-- Bottom Toolbar -->
+    <div class="bottom-bar">
+      <button>📚 Toolkit</button>
+      <button>🕒 Attendance</button>
+      <button id="multiSelectBtn">✅ Select multiple</button>
+      <button>🎲 Random</button>
+      <button>⏱ Timer</button>
+      <button>🖼 Portfolios</button>
+      <button>💡 Big Ideas</button>
     </div>
   </div>
 
   <script>
-    let selectedCards = [];
+    const students = document.querySelectorAll('.student');
+    const multiSelectBtn = document.getElementById('multiSelectBtn');
+    let selectionMode = false;
 
-    const toolbar = document.getElementById("toolbar");
-    const modal = document.getElementById("studentModal");
-
-    document.querySelectorAll(".student-card").forEach(card => {
-      card.addEventListener("click", () => {
-        card.classList.toggle("selected");
-
-        if (card.classList.contains("selected")) {
-          selectedCards.push(card);
-        } else {
-          selectedCards = selectedCards.filter(c => c !== card);
-        }
-
-        toolbar.style.display = selectedCards.length > 0 ? "flex" : "none";
-      });
+    // Toggle multi-select
+    multiSelectBtn.addEventListener('click', () => {
+      selectionMode = !selectionMode;
+      multiSelectBtn.classList.toggle('active', selectionMode);
     });
 
-    function openModal() {
-      modal.style.display = "flex";
-    }
-
-    function closeModal() {
-      modal.style.display = "none";
-    }
-
-    function clearSelection() {
-      selectedCards.forEach(c => c.classList.remove("selected"));
-      selectedCards = [];
-      toolbar.style.display = "none";
-    }
-
-    function awardPoints() {
-      const pts = parseInt(document.getElementById("points").value);
-      selectedCards.forEach(card => {
-        const badge = card.querySelector(".badge");
-        badge.textContent = parseInt(badge.textContent) + pts;
+    // Student click
+    students.forEach(student => {
+      student.addEventListener('click', () => {
+        if (selectionMode) {
+          student.classList.toggle('selected');
+        } else {
+          // one-click award points
+          const points = student.querySelector('.points');
+          points.textContent = parseInt(points.textContent) + 1;
+        }
       });
-      closeModal();
-      clearSelection();
-    }
-
-    window.onclick = (e) => {
-      if (e.target === modal) closeModal();
-    };
+    });
   </script>
-
 </body>
 </html>
